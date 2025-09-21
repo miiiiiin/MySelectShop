@@ -1,9 +1,11 @@
 package miiiiiin.com.myselectshop.controller;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import miiiiiin.com.myselectshop.dto.ProductRequestDto;
 import miiiiiin.com.myselectshop.dto.ProductResponseDto;
 import miiiiiin.com.myselectshop.naver.service.ProductService;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -26,6 +28,11 @@ public class ProductController {
     @PutMapping("/products/{id}")
     public ProductResponseDto updateProduct(@PathVariable Long id, @RequestBody ProductMyPriceRequestDto request) {
         return productService.updateProduct(id, request);
+    }
+
+    @GetMapping("/products")
+    public List<ProductResponseDto> getProducts() {
+        return productService.getProducts();
     }
 
 

@@ -1,6 +1,8 @@
 package miiiiiin.com.myselectshop.naver.service;
 
 import jakarta.transaction.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import miiiiiin.com.myselectshop.controller.ProductMyPriceRequestDto;
 import miiiiiin.com.myselectshop.dto.ProductRequestDto;
@@ -36,5 +38,12 @@ public class ProductService {
         product.update(request);
         return new ProductResponseDto(product);
 
+    }
+
+    public List<ProductResponseDto> getProducts() {
+        return productRepository.findAll()
+            .stream()
+            .map(ProductResponseDto::new)
+            .toList();
     }
 }
