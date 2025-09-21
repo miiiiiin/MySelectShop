@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import miiiiiin.com.myselectshop.controller.ProductMyPriceRequestDto;
 import miiiiiin.com.myselectshop.dto.ProductRequestDto;
+import miiiiiin.com.myselectshop.naver.dto.ItemDto;
 
 @Entity // JPA가 관리할 수 있는 Entity 클래스 지정
 @Getter
@@ -42,5 +43,9 @@ public class Product extends Timestamped {
 
     public void update(ProductMyPriceRequestDto request) {
         this.myprice = request.getMyprice();
+    }
+
+    public void updateByItemDto(ItemDto itemDto) {
+        this.lprice = itemDto.getLprice();
     }
 }

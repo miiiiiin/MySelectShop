@@ -8,6 +8,7 @@ import miiiiiin.com.myselectshop.controller.ProductMyPriceRequestDto;
 import miiiiiin.com.myselectshop.dto.ProductRequestDto;
 import miiiiiin.com.myselectshop.dto.ProductResponseDto;
 import miiiiiin.com.myselectshop.entity.Product;
+import miiiiiin.com.myselectshop.naver.dto.ItemDto;
 import miiiiiin.com.myselectshop.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
@@ -45,5 +46,13 @@ public class ProductService {
             .stream()
             .map(ProductResponseDto::new)
             .toList();
+    }
+
+    @Transactional
+    public void updateBySearch(Long id, ItemDto itemDto) {
+        Product product = productRepository.findById(id)
+            .orElseThrow(() -> new NullPointerException("찾는 상품이 없습니다."));
+
+        product.updateByItemDto(itemDto);
     }
 }
