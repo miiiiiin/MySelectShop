@@ -4,7 +4,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import miiiiiin.com.myselectshop.dto.ProductRequestDto;
 import miiiiiin.com.myselectshop.dto.ProductResponseDto;
-import miiiiiin.com.myselectshop.naver.service.ProductService;
+import miiiiiin.com.myselectshop.service.ProductService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;

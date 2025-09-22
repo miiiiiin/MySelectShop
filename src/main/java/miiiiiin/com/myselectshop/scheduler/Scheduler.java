@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import miiiiiin.com.myselectshop.entity.Product;
 import miiiiiin.com.myselectshop.naver.dto.ItemDto;
 import miiiiiin.com.myselectshop.naver.service.NaverApiService;
-import miiiiiin.com.myselectshop.naver.service.ProductService;
+import miiiiiin.com.myselectshop.service.ProductService;
 import miiiiiin.com.myselectshop.repository.ProductRepository;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;

@@ -1,8 +1,7 @@
-package miiiiiin.com.myselectshop.naver.service;
+package miiiiiin.com.myselectshop.service;
 
 import jakarta.transaction.Transactional;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import miiiiiin.com.myselectshop.controller.ProductMyPriceRequestDto;
 import miiiiiin.com.myselectshop.dto.ProductRequestDto;
