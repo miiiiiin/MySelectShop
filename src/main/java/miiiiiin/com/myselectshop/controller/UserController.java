@@ -7,9 +7,11 @@ import miiiiiin.com.myselectshop.dto.SignupRequestDto;
 import miiiiiin.com.myselectshop.dto.UserInfoDto;
 import miiiiiin.com.myselectshop.entity.UserRoleEnum;
 import miiiiiin.com.myselectshop.security.UserDetailsImpl;
+import miiiiiin.com.myselectshop.service.FolderService;
 import miiiiiin.com.myselectshop.service.UserService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +28,7 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final FolderService folderService;
 
     @GetMapping("/user/login-page")
     public String loginPage() {
@@ -62,5 +65,13 @@ public class UserController {
         boolean isAdmin = (role == UserRoleEnum.ADMIN);
 
         return new UserInfoDto(username, isAdmin);
+    }
+
+    // 회원이 저장한 폴더 정보 보기 (해당 회원이 등록한 폴더 가져오기)
+    @GetMapping("/user-folder")
+    public String getUserInfo(Model model, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        model.addAttribute("folders", folderService.getFolders(userDetails.getUser()));
+        // 타임리프 사용하면서 동적으로 처리하기 위해 부가적으로 넣음
+        return "index :: #fragment";
     }
 }

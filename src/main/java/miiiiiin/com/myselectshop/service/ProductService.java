@@ -1,7 +1,6 @@
 package miiiiiin.com.myselectshop.service;
 
 import jakarta.transaction.Transactional;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import miiiiiin.com.myselectshop.controller.ProductMyPriceRequestDto;
 import miiiiiin.com.myselectshop.dto.ProductRequestDto;
@@ -45,6 +44,12 @@ public class ProductService {
         return new ProductResponseDto(product);
     }
 
+    // 지연로딩 기능 사용하려면 Transactional이 필요 (즉시 로딩 사용할 지, 지연 로딩 조회 기능 사용할 지 양자택일)
+    // 그러나 프로덕트 조회 시마다 계속 무조건 프로덕트 폴더 리스트가 필요하다면 즉시 로딩이 적합
+    // 때에 따라 다르면 지연 로딩
+    // 지연 로딩 하려면 영속성 컨텍스트가 필요 (Transaction 환경이 걸려 있어야 함)
+    // 조회 성능 위해 readOnly true로 설정
+    @Transactional
     public Page<ProductResponseDto> getProducts(User user, int page, int size, String sortBy, boolean isASC) {
         Sort.Direction dir = isASC ? Sort.Direction.ASC : Sort.Direction.DESC;
         Sort sort = Sort.by(dir, sortBy); // 방향, 기준 정렬 항목

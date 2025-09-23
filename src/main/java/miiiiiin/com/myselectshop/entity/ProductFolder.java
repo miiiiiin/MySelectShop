@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Table(name = "product_folder")
-public class ProductFolder {
+public class  ProductFolder {
     // N:M 관계
     // 외래 키 주인
     @Id
