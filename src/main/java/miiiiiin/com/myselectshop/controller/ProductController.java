@@ -4,7 +4,9 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import miiiiiin.com.myselectshop.dto.ProductRequestDto;
 import miiiiiin.com.myselectshop.dto.ProductResponseDto;
+import miiiiiin.com.myselectshop.security.UserDetailsImpl;
 import miiiiiin.com.myselectshop.service.ProductService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,8 +23,9 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping("/products")
-    public ProductResponseDto createProduct(@RequestBody ProductRequestDto request) {
-        return productService.createProduct(request);
+    public ProductResponseDto createProduct(@RequestBody ProductRequestDto request, @AuthenticationPrincipal
+        UserDetailsImpl userDetails) {
+        return productService.createProduct(request, userDetails.getUser());
     }
 
     @PutMapping("/products/{id}")
@@ -31,8 +34,17 @@ public class ProductController {
     }
 
     @GetMapping("/products")
-    public List<ProductResponseDto> getProducts() {
-        return productService.getProducts();
+    public List<ProductResponseDto> getProducts(@AuthenticationPrincipal
+    UserDetailsImpl userDetails) {
+        return productService.getProducts(userDetails.getUser());
+    }
+
+    /**
+     * 모든 계정에서 등록한 모든 상품을 조회 (admin에서)
+     */
+    @GetMapping("/admin/products")
+    public List<ProductResponseDto> getAll() {
+        return productService.getAllProducts();
     }
 
 

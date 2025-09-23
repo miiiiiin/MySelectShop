@@ -7,6 +7,7 @@ import miiiiiin.com.myselectshop.controller.ProductMyPriceRequestDto;
 import miiiiiin.com.myselectshop.dto.ProductRequestDto;
 import miiiiiin.com.myselectshop.dto.ProductResponseDto;
 import miiiiiin.com.myselectshop.entity.Product;
+import miiiiiin.com.myselectshop.entity.User;
 import miiiiiin.com.myselectshop.naver.dto.ItemDto;
 import miiiiiin.com.myselectshop.repository.ProductRepository;
 import org.springframework.stereotype.Service;
@@ -19,8 +20,8 @@ public class ProductService {
 
     public static final int MIN_MY_PRICE = 100;
 
-    public ProductResponseDto createProduct(ProductRequestDto request) {
-        Product product = productRepository.save(new Product(request));
+    public ProductResponseDto createProduct(ProductRequestDto request, User user) {
+        Product product = productRepository.save(new Product(request, user));
         return new ProductResponseDto(product);
     }
 
@@ -40,8 +41,8 @@ public class ProductService {
 
     }
 
-    public List<ProductResponseDto> getProducts() {
-        return productRepository.findAll()
+    public List<ProductResponseDto> getProducts(User user) {
+        return productRepository.findAllByUser(user)
             .stream()
             .map(ProductResponseDto::new)
             .toList();
@@ -53,5 +54,13 @@ public class ProductService {
             .orElseThrow(() -> new NullPointerException("찾는 상품이 없습니다."));
 
         product.updateByItemDto(itemDto);
+    }
+
+    public List<ProductResponseDto> getAllProducts() {
+        return productRepository.findAll()
+            .stream()
+            .map(ProductResponseDto::new)
+            .toList();
+
     }
 }
