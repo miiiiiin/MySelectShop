@@ -50,8 +50,8 @@ public class ProductService {
     // 지연 로딩 하려면 영속성 컨텍스트가 필요 (Transaction 환경이 걸려 있어야 함)
     // 조회 성능 위해 readOnly true로 설정
     @Transactional
-    public Page<ProductResponseDto> getProducts(User user, int page, int size, String sortBy, boolean isASC) {
-        Sort.Direction dir = isASC ? Sort.Direction.ASC : Sort.Direction.DESC;
+    public Page<ProductResponseDto> getProducts(User user, int page, int size, String sortBy, boolean isAsc) {
+        Sort.Direction dir = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
         Sort sort = Sort.by(dir, sortBy); // 방향, 기준 정렬 항목
         Pageable pageable = PageRequest.of(page, size, sort);
 

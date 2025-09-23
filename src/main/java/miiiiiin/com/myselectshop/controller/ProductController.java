@@ -41,12 +41,12 @@ public class ProductController {
     UserDetailsImpl userDetails, @RequestParam("page") int page,
         @RequestParam("size") int size,
         @RequestParam("sortBy") String sortBy,
-        @RequestParam("isASC") boolean isASC) {
+        @RequestParam("isAsc") boolean isAsc) {
         return productService.getProducts(userDetails.getUser(),
             page - 1,
             size,
             sortBy,
-            isASC
+            isAsc
             );
     }
 
