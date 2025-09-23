@@ -50,6 +50,15 @@ public class ProductController {
             );
     }
 
+    @PostMapping("/products/{productId}/folder")
+    public void addFolder(@PathVariable Long productId,
+        @RequestParam Long folderId,
+        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        productService.addFolder(productId, folderId, userDetails.getUser());
+
+    }
+
+
     /**
      * 모든 계정에서 등록한 모든 상품을 조회 (admin에서)
      */
@@ -57,4 +66,6 @@ public class ProductController {
 //    public List<ProductResponseDto> getAll() {
 //        return productService.getAllProducts();
 //    }
+
+
 }
