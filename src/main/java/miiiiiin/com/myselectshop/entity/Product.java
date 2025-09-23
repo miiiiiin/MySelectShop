@@ -1,6 +1,8 @@
 package miiiiiin.com.myselectshop.entity;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -40,6 +42,12 @@ public class Product extends Timestamped {
     @ManyToOne(fetch = FetchType.LAZY) // 상품과 회원은 N:1
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    // Product (1) : ProductFolder(N) => Product에서 중간 테이블인 ProductFolder를 조회할 수 있도록 연관관계 설정
+    // 양방향 관계로 걸려있음. -> 외래키 주입 (mappedBy)
+    // 연관관계의 주인이 될 엔티티를 알려줘야 함 (이 때, ProductFolder에 연관관계로 쓰여진 변수명과 이름이 같아야 함)
+    @OneToMany(mappedBy = "product")
+    private List<ProductFolder> productFolderList = new ArrayList<>();
 
     public Product(ProductRequestDto requestDto, User user) {
         this.title = requestDto.getTitle();
