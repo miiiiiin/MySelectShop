@@ -8,8 +8,13 @@ import miiiiiin.com.myselectshop.dto.ProductRequestDto;
 import miiiiiin.com.myselectshop.dto.ProductResponseDto;
 import miiiiiin.com.myselectshop.entity.Product;
 import miiiiiin.com.myselectshop.entity.User;
+import miiiiiin.com.myselectshop.entity.UserRoleEnum;
 import miiiiiin.com.myselectshop.naver.dto.ItemDto;
 import miiiiiin.com.myselectshop.repository.ProductRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -38,14 +43,29 @@ public class ProductService {
 
         product.update(request);
         return new ProductResponseDto(product);
-
     }
 
-    public List<ProductResponseDto> getProducts(User user) {
-        return productRepository.findAllByUser(user)
-            .stream()
-            .map(ProductResponseDto::new)
-            .toList();
+    public Page<ProductResponseDto> getProducts(User user, int page, int size, String sortBy, boolean isASC) {
+        Sort.Direction dir = isASC ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Sort sort = Sort.by(dir, sortBy); // 방향, 기준 정렬 항목
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        UserRoleEnum role = user.getRole();
+        Page<Product> productList;
+
+        if (role == UserRoleEnum.USER) {
+            productList = productRepository.findAllByUser(user, pageable);
+        } else {
+            productList = productRepository.findAll(pageable);
+        }
+
+//        return productRepository.findAllByUser(user, pageable)
+//            .stream()
+//            .map(ProductResponseDto::new)
+//            .toList();
+
+        return productList
+            .map(ProductResponseDto::new);
     }
 
     @Transactional
@@ -56,11 +76,11 @@ public class ProductService {
         product.updateByItemDto(itemDto);
     }
 
-    public List<ProductResponseDto> getAllProducts() {
-        return productRepository.findAll()
-            .stream()
-            .map(ProductResponseDto::new)
-            .toList();
-
-    }
+//    public List<ProductResponseDto> getAllProducts() {
+//        return productRepository.findAll()
+//            .stream()
+//            .map(ProductResponseDto::new)
+//            .toList();
+//
+//    }
 }
