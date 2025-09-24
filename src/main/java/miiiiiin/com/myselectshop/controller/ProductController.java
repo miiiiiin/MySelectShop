@@ -1,6 +1,5 @@
 package miiiiiin.com.myselectshop.controller;
 
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import miiiiiin.com.myselectshop.dto.ProductRequestDto;
 import miiiiiin.com.myselectshop.dto.ProductResponseDto;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -58,6 +56,24 @@ public class ProductController {
 
     }
 
+    // 폴더별 관심상품 조회
+    @GetMapping("/folders/{folderId}/products")
+    public Page<ProductResponseDto> getProductsInFolder(
+        @PathVariable Long folderId,
+        @RequestParam("page") int page,
+        @RequestParam("size") int size,
+        @RequestParam("sortBy") String sortBy,
+        @RequestParam("isAsc") boolean isAsc,
+        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return productService.getProductsInFolder(
+            folderId,
+            userDetails.getUser(),
+            page - 1,
+            size,
+            sortBy,
+            isAsc
+        );
+    }
 
     /**
      * 모든 계정에서 등록한 모든 상품을 조회 (admin에서)
@@ -66,6 +82,4 @@ public class ProductController {
 //    public List<ProductResponseDto> getAll() {
 //        return productService.getAllProducts();
 //    }
-
-
 }

@@ -114,6 +114,20 @@ public class ProductService {
         productFolderRepository.save(new ProductFolder(product, folder));
     }
 
+    public Page<ProductResponseDto> getProductsInFolder(Long folderId, User user, int page, int size,
+        String sortBy, boolean isAsc) {
+        Sort.Direction dir = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Sort sort = Sort.by(dir, sortBy); // 방향, 기준 정렬 항목
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        // 현재 로그인한 유저가 등록한 상품 조회(어떤 특정한 폴더에 등록된 -> 그 폴더를 가지고 있는 상품 조회)
+        Page<Product> productList = productRepository.findAllByUserAndProductFolderList_FolderId(
+            user, folderId, pageable);
+
+        // 프로덕트 엔티티를 통해서 폴더를 조회하기 위해 현재 양방향으로 조회하고 있는 상태
+        return productList.map(ProductResponseDto::new);
+    }
+
 //    public List<ProductResponseDto> getAllProducts() {
 //        return productRepository.findAll()
 //            .stream()

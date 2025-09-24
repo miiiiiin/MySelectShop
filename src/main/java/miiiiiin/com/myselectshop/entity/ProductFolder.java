@@ -12,6 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Table(name = "product_folder")
 public class  ProductFolder {
+    // 중간 테이블(엔티티)
     // N:M 관계
     // 외래 키 주인
     @Id
